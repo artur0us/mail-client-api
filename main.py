@@ -16,7 +16,10 @@ qrt_app = Quart(__name__)
 # Routes
 @qrt_app.route('/api/v1/mail/inbox', methods=["GET"])
 async def qrt_get_all_msgs():
-  all_msgs = get_all_msgs(MAIN_MBOX_FILE_PATH)
+  if DEV_MODE:
+    all_msgs = get_all_msgs(DEV_MBOX_FILE_PATH)
+  else:
+    all_msgs = get_all_msgs(MAIN_MBOX_FILE_PATH)
   return jsonify(all_msgs)
 
 
@@ -54,8 +57,10 @@ App entry point
 
 
 def main():
-  qrt_app.run(host="0.0.0.0", port=12004)
+  # Preparations
   if USE_SPAM_CHECKER:
-    all_adverts_classifier = train_spam_texts()
+    train_spam_texts()
+  # HTTP server
+  qrt_app.run(host="0.0.0.0", port=12004)
 
 main()

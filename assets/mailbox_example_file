@@ -1,0 +1,63 @@
+From sender@domain.com  Thu Sep 19 19:31:38 2019
+Return-Path: <sender@domain.com>
+X-Original-To: receiver@localhost.com
+Delivered-To: root@domain.com
+Received: from domain.com (domain.com [0.0.0.0])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by domain.com (Postfix) with ESMTPS id 11X5BDB111
+	for <receiver@localhost.com>; Thu, 19 Sep 2019 19:31:38 +0300 (MSK)
+Received: by domain.com with SMTP id qXXXo1290139uao.1
+        for <receiver@localhost.com>; Thu, 19 Sep 2019 09:31:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=domain.com; s=20161025
+X-Gm-Message-State: APjXXXXXXX/ssiNj8ju2XXX8H8AcdXXXXFXXXXXXjGyURWxRpgtqWVaq
+	J0cXXzDtWtBv4jkBFRCWAo3XXXXXRjXXXXX4eXXXXXX
+X-Received: by 2002:ab0:2785:: with SMTP id XXXXXXX6947uap.11.156890009600;
+ Thu, 19 Sep 2019 09:31:36 -0700 (PDT)
+MIME-Version: 1.0
+From: John John <sender@domain.com>
+Date: Thu, 19 Sep 2019 19:31:26 +0300
+Message-ID: <XXXXXXXXXXXXXXXXXXXXXXXXXX@mail.gmail.com>
+Subject: subject message
+To: receiver@domain.com
+Content-Type: multipart/alternative; boundary="000000000000c19bbb0111xx7cac"
+Status: O
+Content-Length: 255
+Lines: 11
+
+--000000000000c19bbb0111xx7cac
+Content-Type: text/plain; charset="UTF-8"
+
+Message body......................
+
+--000000000000c19bbb0111xx7cac
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr">Message body......................</div>
+
+--000000000000c19bbb0111xx7cac--
+
+From sender@domain.com  Thu Sep 19 19:44:15 2019
+Return-Path: <sender@domain.com>
+X-Original-To: receiver@domain.com
+Delivered-To: sender@domain.com
+Received: by domain.com (Postfix, from userid 1000)
+	id 7099ADB78C; Thu, 19 Sep 2019 19:44:15 +0300 (MSK)
+Date: Thu, 19 Sep 2019 19:44:15 +0300
+From: "sender@domain.com" <sender@domain.com>
+To: undisclosed-recipients: ;
+Subject: subject of second message
+Message-ID: <20170101164415.AA1111@domain.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Status: O
+Content-Length: 122
+Lines: 1
+
+Second message

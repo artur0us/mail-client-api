@@ -14,6 +14,7 @@ from constants import *
 from correctness_checkers import *
 from msgs_parse_utils import *
 from drafts_checkers import *
+from spam_checkers import *
 
 """
 Messages parsers
@@ -97,6 +98,12 @@ def get_all_msgs(mbox_file_path):
         print("[!] Current message will not be added because it has errors!")
         continue
       if not is_msg_draft(prepared_msg):
+        # global all_adverts_classifier
+        # if USE_SPAM_CHECKER and all_adverts_classifier != None:
+        #   print(all_adverts_classifier.classify(item["body"]))
+        #   all_msgs.append(prepared_msg)
+        # else:
+        #   all_msgs.append(prepared_msg)
         all_msgs.append(prepared_msg)
   except Exception as err:
     print("[!] Error occurred while parsing all messages!")
@@ -147,7 +154,10 @@ def parse_one_msg(raw_msg):
 
 
 def get_one_msg_attachments(sent_at, message_id):
-  all_msgs = get_all_msgs(MAIN_MBOX_FILE_PATH)
+  if DEV_MODE:
+    all_msgs = get_all_msgs(DEV_MBOX_FILE_PATH)
+  else:
+    all_msgs = get_all_msgs(MAIN_MBOX_FILE_PATH)
   msg_attachments_as_base64 = []
   for idx, item in enumerate(all_msgs):
     if sent_at != None:

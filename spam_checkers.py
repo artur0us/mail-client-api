@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import json
+import json, codecs, os
 from naiveBayesClassifier import tokenizer
 from naiveBayesClassifier.trainer import Trainer
 from naiveBayesClassifier.classifier import Classifier
@@ -11,7 +11,7 @@ all_adverts_classifier = None
 def train_spam_texts():
   # Reading dataset file
   dataset_lang = "ru"
-  dataset_file = open("assets/spam_texts.json")
+  dataset_file = codecs.open(os.path.abspath(os.curdir) + "/assets/spam_texts.json", "r", "utf_8_sig")
   dataset_data = json.load(dataset_file)
 
   # Preparing adverts spam dataset
@@ -32,7 +32,9 @@ def train_spam_texts():
   # Usage
   # classification = adverts_classifier.classify("any spam text")
 
-  return adverts_classifier
+  # return adverts_classifier
+  global all_adverts_classifier
+  all_adverts_classifier = adverts_classifier
 
 def is_msg_spam(msg_obj):
   pass
