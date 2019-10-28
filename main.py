@@ -5,6 +5,7 @@ from quart import Quart, request, jsonify
 
 from constants import *
 from msgs_parsers import *
+from spam_checkers import *
 
 """
 HTTP Server
@@ -54,6 +55,7 @@ App entry point
 
 def main():
   qrt_app.run(host="0.0.0.0", port=12004)
-
+  if USE_SPAM_CHECKER:
+    all_adverts_classifier = train_spam_texts()
 
 main()
