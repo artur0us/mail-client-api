@@ -11,4 +11,4 @@ DEV_MBOX_FILE_PATH = 'assets/mailbox_example_file'
 # Flags
 DEV_MODE = True
 HIDE_DRAFTS = True
-USE_SPAM_CHECKER = False
+USE_SPAM_CHECKER = True

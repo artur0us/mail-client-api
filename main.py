@@ -57,9 +57,6 @@ App entry point
 
 
 def main():
-  # Preparations
-  if USE_SPAM_CHECKER:
-    train_spam_texts()
   # HTTP server
   qrt_app.run(host="0.0.0.0", port=12004)
 

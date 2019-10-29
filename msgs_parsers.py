@@ -16,6 +16,11 @@ from msgs_parse_utils import *
 from drafts_checkers import *
 from spam_checkers import *
 
+# Spam checker training
+adverts_classifier = None
+if USE_SPAM_CHECKER:
+  adverts_classifier = train_spam_texts()
+
 """
 Messages parsers
 """
@@ -98,13 +103,18 @@ def get_all_msgs(mbox_file_path):
         print("[!] Current message will not be added because it has errors!")
         continue
       if not is_msg_draft(prepared_msg):
-        # global all_adverts_classifier
-        # if USE_SPAM_CHECKER and all_adverts_classifier != None:
-        #   print(all_adverts_classifier.classify(item["body"]))
-        #   all_msgs.append(prepared_msg)
-        # else:
-        #   all_msgs.append(prepared_msg)
-        all_msgs.append(prepared_msg)
+        msg_can_be_added = True
+        
+        if not is_msg_correct(prepared_msg):
+          print("[!] Current message is not correct!")
+          msg_can_be_added = False
+        if USE_SPAM_CHECKER and adverts_classifier != None:
+          if adverts_classifier.classify(prepared_msg["body"])[0][1] > 0.55:
+            print("[!] Current message is advertisement!")
+            msg_can_be_added = False
+        
+        if msg_can_be_added:
+          all_msgs.append(prepared_msg)
   except Exception as err:
     print("[!] Error occurred while parsing all messages!")
     print(str(err))

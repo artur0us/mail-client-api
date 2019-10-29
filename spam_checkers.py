@@ -6,8 +6,6 @@ from naiveBayesClassifier import tokenizer
 from naiveBayesClassifier.trainer import Trainer
 from naiveBayesClassifier.classifier import Classifier
 
-all_adverts_classifier = None
-
 def train_spam_texts():
   # Reading dataset file
   dataset_lang = "ru"
@@ -30,11 +28,11 @@ def train_spam_texts():
   adverts_classifier = Classifier(advertsTrainer.data, tokenizer)
 
   # Usage
-  # classification = adverts_classifier.classify("any spam text")
+  # classification = adverts_classifier.classify("рассылка")
+  # category_chance = classification[0][1]
+  # print(category_chance)
 
-  # return adverts_classifier
-  global all_adverts_classifier
-  all_adverts_classifier = adverts_classifier
+  return adverts_classifier
 
 def is_msg_spam(msg_obj):
   pass
