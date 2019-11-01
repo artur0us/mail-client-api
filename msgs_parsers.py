@@ -46,7 +46,7 @@ def prepare_msg(msg_obj):
   msg_attachments_content_types = []
   msg_attachments = []
   msg_attachments_as_base64 = []
-  if "str" not in str(type(msg_obj.get_payload())):
+  if str(type(msg_obj.get_payload())) != str:
     for idx, item in enumerate(msg_obj.get_payload()):
       if ("html" in item.get_content_type()) or ("html" in item.get_content_type()):
         # Detected body text(as attachment)

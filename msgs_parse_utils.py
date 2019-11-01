@@ -149,7 +149,7 @@ def parse_msg_subj(msg_subj):
     msg_subj = (email.header.decode_header(msg_subj)[1])
 
   # msg_subj = msg_subj.decode(chardet.detect(msg_subj))
-  if "byte" in str(type(msg_subj)):
+  if str(type(msg_subj)) == bytes:
     msg_subj = str(msg_subj.decode(msg_subj_encoding))
 
   msg_subj = msg_subj.replace('\"', "")
