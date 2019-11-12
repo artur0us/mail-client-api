@@ -1,0 +1,3 @@
+class CommonConsts:
+
+  pass

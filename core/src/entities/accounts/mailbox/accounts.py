@@ -1,0 +1,3 @@
+class MailboxAccsEntity:
+
+  pass

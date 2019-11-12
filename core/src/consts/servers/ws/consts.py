@@ -1,0 +1,3 @@
+class WSConsts:
+
+  pass
