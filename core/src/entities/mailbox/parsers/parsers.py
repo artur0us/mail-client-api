@@ -1,4 +1,4 @@
-import os, uuid, chardet, email.header, time, base64, hashlib, mailbox
+import os, uuid, chardet, email.header, time, base64, hashlib, mailbox, threading
 
 import html2text
 from dateutil import parser as dtparser
@@ -9,6 +9,8 @@ from src.consts.mailbox.consts import MBoxConsts
 from src.entities.mailbox.checkers.correctness.checkers import MBoxCorrectCheckersEntity
 from src.entities.mailbox.checkers.drafts.checkers import MboxDraftsCheckers
 from src.entities.mailbox.checkers.spam.checkers import MBoxSpamCheckers
+
+from src.entities.mailbox.mailbox import MBoxEntity
 
 class MBoxParsers:
 
@@ -36,6 +38,10 @@ class MBoxParsers:
     msg_attachments_as_base64 = []
     if str(type(msg_obj.get_payload())) != str:
       for idx, item in enumerate(msg_obj.get_payload()):
+        try:
+          item.get_content_type()
+        except:
+          continue
         if ("html" in item.get_content_type()) or ("html" in item.get_content_type()):
           # Detected body text(as attachment)
           pass
@@ -80,13 +86,22 @@ class MBoxParsers:
 
 
   @staticmethod
-  def get_all_msgs(mbox_file_path):
+  def get_all_msgs(mbox_file_path, delete_in_final):
     is_err_result = False
     all_msgs = []
+    msgs_keys_to_delete = []
+    
+    if MBoxEntity.is_mbox_locked:
+      return {
+        "status": -2,
+        "msg": "Service is busy!",
+        "data": []
+      }
 
+    mbox = None
     try:
       mbox = mailbox.mbox(mbox_file_path)
-      for idx, item in enumerate(mbox):
+      for idx, item in mbox.iteritems(): # Old: for idx, item in enumerate(mbox):
         prepared_msg = MBoxParsers.prepare_msg(item)
         if prepared_msg == False:
           print("[!] Current message will not be added because it has errors!")
@@ -104,11 +119,27 @@ class MBoxParsers:
           
           if msg_can_be_added:
             all_msgs.append(prepared_msg)
+          
+          msgs_keys_to_delete.append(idx)
     except Exception as err:
       print("[!] Error occurred while parsing all messages!")
       print(str(err))
       is_err_result = True
-
+    
+    if mbox != None:
+      mbox.unlock()
+      mbox.close()
+    
+    if (
+      (not is_err_result)
+      and (delete_in_final)
+      and (mbox != None)
+      and (not MBoxEntity.is_mbox_locked)
+    ):
+      # Delete messages
+      pass
+      threading.Thread(target=MBoxEntity.delete_messages_by_keys, args=(mbox_file_path, msgs_keys_to_delete, )).start()
+ 
     if is_err_result:
       return {
         "status": -1,
@@ -255,7 +286,12 @@ class MBoxParsers:
     # msg_subj = "Unknown message subject"
     # msg_subj = (email.header.decode_header(msg_subj)[0][1])
 
+    # Message subject could be empty or invalid
+    if msg_subj == None:
+      return "Empty or invalid subject"
+
     # Checking message's subject for None
+    # TODO: remove this actions
     if msg_subj == None:
       msg_subj = (email.header.decode_header(msg_subj)[0][0])
     if msg_subj == None:
@@ -318,6 +354,7 @@ class MBoxParsers:
             msg_subj_encoding = item["name"]
 
     # Checking message's subject for None again(for wtf situation)
+    # TODO: remove this actions
     if msg_subj == None:
       msg_subj = (email.header.decode_header(msg_subj)[0][0])
     if msg_subj == None:

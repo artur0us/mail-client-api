@@ -14,6 +14,12 @@ class MainHTTPServer:
 
   # Server answers templates
   answers_templates = {
+    "invalid_auth_token": {
+      "server_status": 1,
+      "status": -1,
+      "msg": "Invalid auth token",
+      "data": {}
+    },
     "auth_err": {
       "server_status": 1,
       "status": -1,
@@ -52,12 +58,27 @@ class MainHTTPServer:
     
     @MainHTTPServer.server.route('/api/v1/mail/inbox', methods=["GET"])
     async def qrt_get_all_msgs():
+      input_data = await request.get_json() # {"messages": {"delete_after_receiving": true}}
+      delete_in_final = True # Get value of this parameter from input_data variable
+
+      # If you need authorization
+      # auth_token = None
+      # try:
+      #   auth_token = str(request.headers['app-auth-token'])
+      # except:
+      #   return jsonify(MainHTTPServer.answers_templates["invalid_auth_token"])
+      # if auth_token == None or auth_token.replace(" ", "") == "": # Uncomment if you need authorization
+      #   return jsonify(MainHTTPServer.answers_templates["invalid_auth_token"])
+
+      # If authorization is not needed
+      auth_token = "uuid_token" # Comment if you need authorization
+
       if not AccountsAuthEntity.is_authed("uuid_token"):
         return jsonify(MainHTTPServer.answers_templates["auth_err"])
       if AppConsts.DEV_MODE:
-        all_msgs = MBoxParsers.get_all_msgs(MBoxConsts.DEV_MBOX_FILE_PATH)
+        all_msgs = MBoxParsers.get_all_msgs(MBoxConsts.DEV_MBOX_FILE_PATH, delete_in_final)
       else:
-        all_msgs = MBoxParsers.get_all_msgs(MBoxConsts.MAIN_MBOX_FILE_PATH)
+        all_msgs = MBoxParsers.get_all_msgs(MBoxConsts.MAIN_MBOX_FILE_PATH, delete_in_final)
       return jsonify(all_msgs)
     
     @MainHTTPServer.server.route('/api/v1/mail/parser/oneMsg', methods=["GET"])
