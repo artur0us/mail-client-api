@@ -11,8 +11,9 @@ Supports mail encoding variants: UTF-8, UTF-16-LE, CP1251, KOI8-R, KOI8-U, ISO-8
 - @artur0us
 
 ## Usage:
+(Run as administrator/superuser)
 - Windows: py main.py
-- Linux: python3 main.py
+- Linux: sudo python3 main.py
 - ...
 
 ## Requirements:
@@ -53,7 +54,7 @@ stdout_logfile=/home/system_username/app_work_dir/mail_api_logs.txt
 stdout_logfile_maxbytes=1MB
 autostart=true
 autorestart=true
-user=system_username
+user=root
 stopsignal=KILL
 numprocs=1
 process_name=mail-api-microservice
