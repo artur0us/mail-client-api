@@ -11,7 +11,7 @@ class MBoxSpamCheckers:
   def train_spam_texts():
     # Reading dataset file
     dataset_lang = "ru"
-    dataset_file = codecs.open(os.path.abspath(os.curdir) + "/assets/spam_texts.json", "r", "utf_8_sig")
+    dataset_file = codecs.open(os.path.abspath(os.curdir) + "/data/assets/spam_texts.json", "r", "utf_8_sig")
     dataset_data = json.load(dataset_file)
 
     # Preparing adverts spam dataset

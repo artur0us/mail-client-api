@@ -1,5 +1,5 @@
 import mailbox, time, sys, traceback, os
-from datetime import datetime, date, time
+from datetime import datetime, date #, time
 from shutil import copyfile
 
 from src.consts.app.consts import AppConsts
@@ -41,9 +41,9 @@ class MBoxEntity:
     # TODO: backup mailbox file
     now = datetime.now()
     if AppConsts.DEV_MODE:
-      copyfile(MBoxConsts.DEV_MBOX_FILE_PATH, "backups/mailbox_backup__" + str(now.strftime("%d%m%Y_%I%M%S")))
+      copyfile(MBoxConsts.DEV_MBOX_FILE_PATH, "data/backups/mailbox_backup__" + str(now.strftime("%d%m%Y_%I%M%S")))
     else:
-      copyfile(MBoxConsts.MAIN_MBOX_FILE_PATH, "backups/mailbox_backup__" + str(now.strftime("%d%m%Y_%I%M%S")))
+      copyfile(MBoxConsts.MAIN_MBOX_FILE_PATH, "data/backups/mailbox_backup__" + str(now.strftime("%d%m%Y_%I%M%S")))
     
     # TODO: remove old mailbox backups
 
