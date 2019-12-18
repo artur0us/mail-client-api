@@ -41,7 +41,12 @@ class HTTPServer:
     
     @HTTPServer.server.route('/api/v1/mail/inbox', methods=["GET"])
     async def qrt_get_all_msgs():
-      input_data = await request.get_json() # {"messages": {"delete_after_receiving": true}}
+      input_data = None
+      try:
+        input_data = await request.get_json() # {"messages": {"delete_after_receiving": true}}
+      except:
+        # TODO
+        pass
       delete_in_final = False # Get value of this parameter from input_data variable
 
       if HTTPConsts.NEED_CHECK_AUTH:

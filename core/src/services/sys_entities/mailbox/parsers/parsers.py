@@ -1,4 +1,4 @@
-import os, uuid, chardet, email.header, time, base64, hashlib, mailbox, threading
+import os, uuid, chardet, email.header, time, base64, hashlib, mailbox, threading, traceback, sys
 
 import html2text
 from dateutil import parser as dtparser
@@ -26,7 +26,8 @@ class MBoxParsers:
     msg_to = MBoxParsers.parse_msg_to(str(msg_obj["to"]))
     msg_subj = MBoxParsers.parse_msg_subj(msg_obj["subject"])
     msg_sent_at = int(time.mktime(
-        (dtparser.parse(msg_obj["Date"])).timetuple()))
+      (dtparser.parse(msg_obj["Date"])).timetuple())
+    )
 
     msg_body, msg_body_charset = MBoxParsers.get_msg_body(msg_obj)
     msg_body = str(msg_body).replace("b'", "")
@@ -82,7 +83,10 @@ class MBoxParsers:
       "body_charset": msg_body_charset,
       "attachments_content_types": msg_attachments_content_types,
       "attachments": msg_attachments,
-      "attachments_as_base64": msg_attachments_as_base64
+      "attachments_as_base64": []
+      # "attachments_content_types": msg_attachments_content_types,
+      # "attachments": msg_attachments,
+      # "attachments_as_base64": msg_attachments_as_base64
     }
 
     msg = MBoxCorrectCheckersEntity.check_prepared_msg(msg)
@@ -125,6 +129,11 @@ class MBoxParsers:
     except Exception as err:
       print("[!] Error occurred while parsing all messages!")
       print(str(err))
+      print(err.message)
+      print(traceback.format_exc())
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
       is_err_result = True
     
     if mbox != None:
@@ -341,7 +350,7 @@ class MBoxParsers:
       msg_subj = (email.header.decode_header(msg_subj)[1])
 
     # msg_subj = msg_subj.decode(chardet.detect(msg_subj))
-    if str(type(msg_subj)) == bytes:
+    if type(msg_subj) == bytes:
       msg_subj = str(msg_subj.decode(msg_subj_encoding))
 
     msg_subj = msg_subj.replace('\"', "")

@@ -24,8 +24,8 @@ Supports mail encoding variants: UTF-8, UTF-16-LE, CP1251, KOI8-R, KOI8-U, ISO-8
 - *BSD
 - ...
 ### Software:
-- Python 3.x(should work w/ python 2.x)
-- PIP3 for Python 3.x(similar to previous line)
+- Python >=3.7
+- PIP3 for Python 3.7(similar to previous line)
 - Mail software
 
 ### Python dependencies:
