@@ -126,6 +126,8 @@ class MBoxParsers:
             all_msgs.append(prepared_msg)
           
           msgs_keys_to_delete.append(idx)
+        else:
+          msgs_keys_to_delete.append(idx)
     except Exception as err:
       print("[!] Error occurred while parsing all messages!")
       print(str(err))

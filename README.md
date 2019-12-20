@@ -3,7 +3,7 @@
 
 ## Description:
 ```
-Microservice that can receive and process all messages from the local server mailbox.
+Microservice that can receive, backup and process all messages from the local server mailbox.
 Supports mail encoding variants: UTF-8, UTF-16-LE, CP1251, KOI8-R, KOI8-U, ISO-8859-1.
 ```
 

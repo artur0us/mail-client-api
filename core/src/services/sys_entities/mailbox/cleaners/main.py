@@ -33,14 +33,30 @@ class MBoxCleaners:
       return False
     
     MBoxEntity.is_mbox_locked = True
-    print("Deleting messages(count: " + str(len(msgs_keys_to_delete)) + ")...")
+    print("[i] Deleting messages(count: " + str(len(msgs_keys_to_delete)) + ")...")
     time.sleep(2) # Simulated delay
 
     # TODO: backup mailbox file
     now = datetime.now()
-    copyfile(MBoxSettings.USING_MBOX_FILE_PATH, "data/backups/mailbox_backup__" + str(now.strftime("%d%m%Y_%I%M%S")))
+    try:
+      copyfile(MBoxSettings.USING_MBOX_FILE_PATH, "data/backups/mailbox_backup__" + str(now.strftime("%d%m%Y_%I%M%S")))
+    except Exception as err:
+      print("[!] Error occurred while creating mailbox backup! Skipping next actions...")
+      print(str(err))
+      return False
     
     # TODO: remove old mailbox backups
+    for one_file in os.listdir("data/backups"):
+      if os.stat(os.path.join("data/backups", one_file)).st_mtime < time.time() - 7 * 86400:
+        if "mailbox_backup" in str(one_file):
+          print("[i] Found old(more that 7 days) mail backup file!\nFile name: " + str(one_file) + "\nWill be removed...")
+          pass # os.remove(os.path.join("data/backups", one_file))
+          try:
+            os.remove(os.path.join("data/backups", one_file))
+          except Exception as err:
+            print("[!] Error occurred while old mailbox backup files removal! Skipping next actions...")
+            print(str(err))
+            return False
 
     mbox = mailbox.mbox(mbox_file_path)
     mbox.lock()
