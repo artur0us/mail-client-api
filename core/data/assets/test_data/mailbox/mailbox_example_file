@@ -48,7 +48,7 @@ Received: by domain.com (Postfix, from userid 1000)
 	id 7099ADB78C; Thu, 19 Sep 2019 19:44:15 +0300 (MSK)
 Date: Thu, 19 Sep 2019 19:44:15 +0300
 From: "sender@domain.com" <sender@domain.com>
-To: undisclosed-recipients: ;
+To: second_account@example.com
 Subject: subject of second message
 Message-ID: <20170101164415.AA1111@domain.com>
 MIME-Version: 1.0
@@ -61,3 +61,25 @@ Content-Length: 122
 Lines: 1
 
 Second message
+
+From sender@domain.com  Thu Sep 19 19:44:15 2019
+Return-Path: <sender@domain.com>
+X-Original-To: receiver@domain.com
+Delivered-To: sender@domain.com
+Received: by domain.com (Postfix, from userid 1000)
+	id 7099ADB78C; Thu, 19 Sep 2019 19:44:15 +0300 (MSK)
+Date: Thu, 19 Sep 2019 19:44:15 +0300
+From: "sender@domain.com" <sender@domain.com>
+To: undisclosed-recipients: ;
+Subject: subject of second message
+Message-ID: <20170101164415.AA1111@domain.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Status: O
+Content-Length: 122
+Lines: 1
+
+Invalid message(because of "TO" field)
